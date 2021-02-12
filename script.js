@@ -1,8 +1,9 @@
 const container = document.querySelector('.container')
 const searchInput = document.querySelector('#searchComponent')
 
-const apiEnd = 'https://api.pokemontcg.io/v2/cards?page=1&pageSize=25';
+const apiEnd = 'https://api.pokemontcg.io/v2/cards?pageSize=25&page=1';
 var apiEndSearch = 'https://api.pokemontcg.io/v2/cards?q=name:';
+var flag = 0, page = 1;
 
 pokedexApi();
 
@@ -48,6 +49,7 @@ function noDataFound() {
 async function searchPokemon() {
     let pokemon = searchInput.value;
     if (pokemon.length > 3) {
+        flag = 1;
         loadingText();
         try {
             var res = await fetch(apiEndSearch + pokemon + '*&pageSize=25&page=1')
@@ -63,5 +65,20 @@ async function searchPokemon() {
     } else if (pokemon.length == 0) {
         clearScreen();
         pokedexApi();
+        flag = 0;
     }
+}
+
+async function pagination(state) {
+    console.log('state ', state);
+    console.log('page ', page);
+
+    if (page > 1) {
+        state == 'right' ? page++ : page--;
+        loadingText();
+        clearScreen();
+        let res = await fetch(!flag ? apiEnd.slice(0, -1) + page : apiEndSearch)
+        res = await res.json();
+        setCards(res);
+    } 
 }
