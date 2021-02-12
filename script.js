@@ -8,7 +8,7 @@ var flag = 0, page = 1;
 pokedexApi();
 
 function setCards(res) {
-    console.log(res);
+    // console.log(res);
     res.data.forEach(card => {
         let image = document.createElement('img')
         image.src = card.images.large;
