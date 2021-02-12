@@ -6,9 +6,7 @@ var apiEndSearch = 'https://api.pokemontcg.io/v1/cards?name=';
 
 pokedexApi();
 
-async function pokedexApi() {
-    var res = await fetch(apiEnd);
-    res = await res.json()
+function setCards(res) {
     res.cards.forEach(card => {
         let image = document.createElement('img')
         image.src = card.imageUrl;
@@ -16,6 +14,12 @@ async function pokedexApi() {
         image.className = 'apiImage'
         container.appendChild(image);
     })
+}
+
+async function pokedexApi() {
+    var res = await fetch(apiEnd);
+    res = await res.json()
+    setCards(res);
 }
 
 function clearScreen() {
@@ -48,6 +52,10 @@ async function searchPokemon() {
             var res = await fetch(apiEndSearch + pokemon)
             res = await res.json();
             if (res.cards.length == 0) noDataFound();
+            else {
+                clearScreen();
+                setCards(res);
+            }
         } catch (error) {
             console.log(error);
         }
