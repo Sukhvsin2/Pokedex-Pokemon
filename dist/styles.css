@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 * {
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 .container {
@@ -24,4 +26,14 @@ img {
   align-items: center;
   height: 10vh;
   background-color: antiquewhite;
+}
+.input input {
+  width: 50%;
+  font-size: 1rem;
+  padding: 5px 7px;
+  border-radius: 25px;
+  border: none;
+}
+.input input:focus {
+  outline-width: 0;
 }
