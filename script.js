@@ -70,11 +70,9 @@ async function searchPokemon() {
 }
 
 async function pagination(state) {
-    console.log('state ', state);
-    console.log('page ', page);
-
+    page > 0 ? state == 'right' ? ++page : --page : null;
+    console.log('page val: ', page);
     if (page > 1) {
-        state == 'right' ? page++ : page--;
         loadingText();
         clearScreen();
         let res = await fetch(!flag ? apiEnd.slice(0, -1) + page : apiEndSearch)
