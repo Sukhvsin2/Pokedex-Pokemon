@@ -71,12 +71,14 @@ async function searchPokemon() {
 
 async function pagination(state) {
     page > 0 ? state == 'right' ? ++page : --page : null;
-    console.log('page val: ', page);
+    // console.log('page val: ', page);
+    document.querySelector('.pageNumber').innerHTML = `Page ${page}`
     if (page > 1) {
         loadingText();
-        clearScreen();
-        let res = await fetch(!flag ? apiEnd.slice(0, -1) + page : apiEndSearch)
+        let res = await fetch(!flag ? apiEnd.slice(0, -1) + page : apiEndSearch + searchInput.value + `*&pageSize=25&page=${page}`);
         res = await res.json();
+        // if (res.data.length == 0) noDataFound();
+        clearScreen();
         setCards(res);
     } 
 }
