@@ -20,15 +20,39 @@ async function pokedexApi() {
 
 function clearScreen() {
     document.querySelectorAll('.apiImage').forEach(e => e.remove());
+    document.querySelectorAll('.loadingComponent').forEach(e => e.remove());
+    document.querySelectorAll('.NoDataComponent').forEach(e => e.remove());
+}
+
+function loadingText() {
+    clearScreen();
+    const loading = document.createElement('div')
+    loading.innerHTML = 'Loading Data...'
+    loading.className = 'loadingComponent'
+    container.appendChild(loading)
+}
+
+function noDataFound() {
+    clearScreen();
+    const loading = document.createElement('div')
+    loading.innerHTML = 'No Data Found 💩'
+    loading.className = 'NoDataComponent'
+    container.appendChild(loading)    
 }
 
 async function searchPokemon() {
     let pokemon = searchInput.value;
     if (pokemon.length > 3) {
+        loadingText();
+        try {
+            var res = await fetch(apiEndSearch + pokemon)
+            res = await res.json();
+            if (res.cards.length == 0) noDataFound();
+        } catch (error) {
+            console.log(error);
+        }
+    } else if (pokemon.length == 0) {
         clearScreen();
-        var res = await fetch(apiEndSearch + pokemon)
-        res = await res.json();
-    } else if(pokemon.length == 0) {
         pokedexApi();
     }
 }
