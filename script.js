@@ -1,15 +1,16 @@
 const container = document.querySelector('.container')
 const searchInput = document.querySelector('#searchComponent')
 
-const apiEnd = 'https://api.pokemontcg.io/v1/cards?name=charizard';
-var apiEndSearch = 'https://api.pokemontcg.io/v1/cards?name=';
+const apiEnd = 'https://api.pokemontcg.io/v2/cards?page=1&pageSize=25';
+var apiEndSearch = 'https://api.pokemontcg.io/v2/cards?q=name:';
 
 pokedexApi();
 
 function setCards(res) {
-    res.cards.forEach(card => {
+    console.log(res);
+    res.data.forEach(card => {
         let image = document.createElement('img')
-        image.src = card.imageUrl;
+        image.src = card.images.large;
         image.alt = card.name;
         image.className = 'apiImage'
         container.appendChild(image);
@@ -49,9 +50,9 @@ async function searchPokemon() {
     if (pokemon.length > 3) {
         loadingText();
         try {
-            var res = await fetch(apiEndSearch + pokemon)
+            var res = await fetch(apiEndSearch + pokemon + '*&pageSize=25&page=1')
             res = await res.json();
-            if (res.cards.length == 0) noDataFound();
+            if (res.data.length == 0) noDataFound();
             else {
                 clearScreen();
                 setCards(res);
